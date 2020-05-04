@@ -28,6 +28,7 @@ def get_all_user():
 
     users = User.get_all_users()
     output_data = []
+    print(users)
 
     for user in users:
         user_data = {}
@@ -35,5 +36,6 @@ def get_all_user():
         user_data['name'] = user.name
         user_data['appeal_name'] = user.appealName
         user_data['password'] = user.password
+        output_data.append(user_data)
 
     return jsonify({'users': output_data})

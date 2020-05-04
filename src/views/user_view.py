@@ -12,7 +12,6 @@ def create_user():
 
     data = request.get_json()
 
-    # check if user already exist in the db
     user_in_db = User.get_user_by_name(data.get('name'))
     if user_in_db:
         return jsonify({'message': 'User already exist'})
@@ -24,7 +23,9 @@ def create_user():
 
     return jsonify({'message': 'success'})
 
-
+"""
+Get all users list
+"""
 @user_api.route('/users/', methods=['GET'])
 def get_all_user():
 
@@ -34,6 +35,7 @@ def get_all_user():
 
     for user in users:
         user_data = {}
+        user_data['id'] = user.id
         user_data['public_id'] = user.public_id
         user_data['name'] = user.name
         user_data['appeal_name'] = user.appealName
@@ -41,3 +43,20 @@ def get_all_user():
         output_data.append(user_data)
 
     return jsonify({'users': output_data})
+
+@user_api.route('/users/<id>/', methods=['GET'])
+def get_one_user_by_Id(id):
+
+    user = User.get_one_user(id)
+
+    if not user:
+        return jsonify({'message': 'User not found'})
+
+    user_data = {}
+    user_data['public_id'] = user.public_id
+    user_data['name'] = user.name
+    user_data['appeal_name'] = user.appealName
+    user_data['password'] = user.password
+
+    return jsonify({'user': user_data})
+

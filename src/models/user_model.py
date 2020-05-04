@@ -34,3 +34,9 @@ class User(db.Model):
     def get_user_by_name(value):
         return User.query.filter_by(name=value).first()
 
+    def generate_hashed_password(password):
+        return bcrypt.generate_password_hash(password, rounds=10).decode("utf-8")
+
+    def check_hashed_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
+

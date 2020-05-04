@@ -17,7 +17,9 @@ def create_user():
     if user_in_db:
         return jsonify({'message': 'User already exist'})
 
-    new_user = User(public_id=str(uuid.uuid4()), name=data['name'], appealName=data['appeal_name'], password=data['password'])
+    hashed_password = User.generate_hashed_password(data['password'])
+
+    new_user = User(public_id=str(uuid.uuid4()), name=data['name'], appealName=data['appeal_name'], password=hashed_password)
     new_user.add_user()
 
     return jsonify({'message': 'success'})

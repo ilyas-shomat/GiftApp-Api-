@@ -1,6 +1,7 @@
 from flask import request, json, Response, Blueprint, jsonify
 from src.models.wish_model import Wish
 from src.shared.auth import Auth
+from src.models.user_model import User
 import helper
 
 wish_api = Blueprint('wishes', __name__)
@@ -10,9 +11,10 @@ wish_user_id = 5
 """
 Get all wish list
 """
+
+
 @wish_api.route('/wishes/', methods=['GET'])
 def get_all_wishes():
-
     wishes = Wish.get_all_wishes()
     output_data = []
 
@@ -27,12 +29,14 @@ def get_all_wishes():
 
     return jsonify({'wishes': output_data})
 
+
 """
 Get one wish in list
 """
+
+
 @wish_api.route('/wishes/<id>/', methods=['GET'])
 def get_one_wish(id):
-
     wish = Wish.get_wish_by_id(id)
 
     if not wish:
@@ -47,17 +51,19 @@ def get_one_wish(id):
 
     return jsonify({'wishes': wish_data})
 
+
 """
 Create new wish 
 """
+
+
 @wish_api.route('/wishes/', methods=['POST'])
 def create_new_wish():
-
     data = request.get_json()
 
     new_wish = Wish(
         text=data['text'],
-        like=False,
+        like=True,
         date="",
         user_id=wish_user_id
     )
@@ -65,13 +71,15 @@ def create_new_wish():
     new_wish.add_wish()
     return jsonify({'message': 'successfully added'})
 
+
 """
 Edit one wish in list
 """
+
+
 @wish_api.route('/wishes/<id>', methods=['PUT'])
 @Auth.token_reuired
 def edit_one_wish(current_user, id):
-
     data = request.get_json()
     wish = Wish.get_wish_by_id(id)
 
@@ -85,7 +93,6 @@ def edit_one_wish(current_user, id):
 @wish_api.route('/wishes/<id>', methods=['DELETE'])
 @Auth.token_reuired
 def delete_wish(current_user, id):
-
     wish = Wish.get_wish_by_id(id)
 
     if not wish:
@@ -99,7 +106,6 @@ def delete_wish(current_user, id):
 @wish_api.route('/wishes/today_wish/', methods=['GET'])
 @Auth.token_reuired
 def get_today_wish(current_user):
-
     # found = False
     # wish_data = {}
     # while found == True:
@@ -117,6 +123,8 @@ def get_today_wish(current_user):
     #
     #
     # return jsonify({'today_wish': wish_data})
+    # print(current_user)
+    # user = User.get_user_by_public_id()
 
     wish = Wish.get_random_wish()
     wish_data = {}
@@ -127,5 +135,24 @@ def get_today_wish(current_user):
     wish_data['wish_date'] = wish.date
     wish_data['wish_user_id'] = wish.user_id
 
-
     return jsonify({'today_wish': wish_data})
+
+
+@wish_api.route('/wishes/liked_wishes/', methods=['GET'])
+@Auth.token_reuired
+def get_liked_wishes(current_user):
+    wishes = Wish.get_all_wishes()
+    output_data = []
+
+    for wish in wishes:
+        if wish.like == True:
+            wish_data = {}
+            wish_data['wish_id'] = wish.id
+            wish_data['wish_text'] = wish.text
+            wish_data['wish_like'] = wish.like
+            wish_data['wish_date'] = wish.date
+            wish_data['wish_user_id'] = wish.user_id
+            output_data.append(wish_data)
+
+    return jsonify({'liked_wishes': output_data})
+

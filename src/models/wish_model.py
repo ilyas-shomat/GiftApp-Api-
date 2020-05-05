@@ -34,6 +34,8 @@ class Wish(db.Model):
                 self.text = value
             if key == 'date':
                 self.date = value
+            if key == 'like':
+                self.like = value
         db.session.commit()
 
     def delete_wish(self):

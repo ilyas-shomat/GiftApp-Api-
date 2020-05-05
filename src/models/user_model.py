@@ -38,8 +38,13 @@ class User(db.Model):
         return User.query.filter_by(name=value).first()
 
     @staticmethod
+    def get_user_by_public_id(public_id):
+        return User.query.filter_by(public_id=public_id).first()
+
+    @staticmethod
     def get_one_user(id):
         return User.query.filter_by(id=id).first()
+
 
     def generate_hashed_password(password):
         return bcrypt.generate_password_hash(password, rounds=10).decode("utf-8")

@@ -60,15 +60,17 @@ def get_one_user_by_Id(id):
 
     return jsonify({'user': user_data})
 
-@user_api.route('/users/<id>/', methods=['PUT'])
+@user_api.route('/users/<id>', methods=['PUT'])
 def edit_user_data(id):
 
+    data = request.get_json()
     user = User.get_one_user(id)
 
     if not user:
         return jsonify({'message': 'User not found'})
 
-
+    user.update_user_info(data=data)
+    return jsonify({'message': 'User data is updated'})
 
 @user_api.route('/users/<id>', methods=['DELETE'])
 def delete_user(id):

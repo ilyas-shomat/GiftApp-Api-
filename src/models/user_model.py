@@ -24,6 +24,14 @@ class User(db.Model):
         #     if key == 'password':
         #         self.password = self.__generate_hash(item)
         #     setattr(self, key, item)
+        #
+        for key, value in data.items():
+            if key == 'name':
+                self.name = value
+            if key == 'appeal_name':
+                self.appealName = value
+            if key == 'password':
+                self.password = User.generate_hashed_password(value)
         db.session.commit()
 
     def delete_user(self):

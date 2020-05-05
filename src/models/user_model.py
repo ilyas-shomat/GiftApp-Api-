@@ -20,11 +20,6 @@ class User(db.Model):
         return User.query.all()
 
     def update_user_info(self, data):
-        # for key, item in data.items():
-        #     if key == 'password':
-        #         self.password = self.__generate_hash(item)
-        #     setattr(self, key, item)
-        #
         for key, value in data.items():
             if key == 'name':
                 self.name = value

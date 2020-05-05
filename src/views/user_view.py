@@ -36,7 +36,7 @@ def get_all_user():
 
     users = User.get_all_users()
     output_data = []
-    print(users)
+    # print(users)
 
     for user in users:
         user_data = {}

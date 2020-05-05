@@ -11,7 +11,6 @@ class Auth():
   @staticmethod
   def generate_token(public_id):
 
-
     payload = {'sub': public_id}
     return jwt.encode(payload, Development.JWT_SECRET_KEY, 'HS256').decode("utf-8")
 

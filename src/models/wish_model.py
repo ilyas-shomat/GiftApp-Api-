@@ -1,4 +1,8 @@
 from . import db
+from  sqlalchemy.sql.expression import func, select
+import random
+from sqlalchemy.sql import func
+from sqlalchemy.orm import load_only
 
 class Wish(db.Model):
 
@@ -36,3 +40,7 @@ class Wish(db.Model):
 
         db.session.delete(self)
         db.session.commit()
+
+    @staticmethod
+    def get_random_wish():
+        return random.choice(Wish.query.all())

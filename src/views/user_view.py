@@ -18,7 +18,11 @@ def create_user():
 
     hashed_password = User.generate_hashed_password(data['password'])
 
-    new_user = User(public_id=str(uuid.uuid4()), name=data['name'], appealName=data['appeal_name'], password=hashed_password)
+    new_user = User(
+        public_id=str(uuid.uuid4()),
+        name=data['name'],
+        appealName=data['appeal_name'],
+        password=hashed_password)
     new_user.add_user()
 
     return jsonify({'message': 'success'})
@@ -43,7 +47,9 @@ def get_all_user():
         output_data.append(user_data)
 
     return jsonify({'users': output_data})
-
+"""
+Get one list
+"""
 @user_api.route('/users/<id>/', methods=['GET'])
 def get_one_user_by_Id(id):
 
@@ -60,6 +66,9 @@ def get_one_user_by_Id(id):
 
     return jsonify({'user': user_data})
 
+"""
+Edit selected user's data
+"""
 @user_api.route('/users/<id>', methods=['PUT'])
 def edit_user_data(id):
 
@@ -72,6 +81,9 @@ def edit_user_data(id):
     user.update_user_info(data=data)
     return jsonify({'message': 'User data is updated'})
 
+"""
+Delete selected user
+"""
 @user_api.route('/users/<id>', methods=['DELETE'])
 def delete_user(id):
 
@@ -83,3 +95,20 @@ def delete_user(id):
     user.delete_user()
 
     return jsonify({'message': "user deleted"})
+
+
+@user_api.route('/users/login/', methods=['POST'])
+def login():
+
+    data = request.get_json()
+    user_name = data['name']
+
+    user = User.get_user_by_name(user_name)
+
+    if not user:
+        return jsonify({'message': 'No such user'})
+
+    if not user.check_hashed_password(data['password']):
+        return jsonify({'message': 'No such user'})
+
+    return jsonify({'message': 'found such user'})

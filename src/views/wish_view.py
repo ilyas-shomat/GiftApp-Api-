@@ -1,5 +1,6 @@
 from flask import request, json, Response, Blueprint, jsonify
 from src.models.wish_model import Wish
+from src.shared.auth import Auth
 
 wish_api = Blueprint('wishes', __name__)
 
@@ -7,7 +8,8 @@ wish_api = Blueprint('wishes', __name__)
 Get all wish list
 """
 @wish_api.route('/wishes/', methods=['GET'])
-def get_all_wishes():
+@Auth.token_reuired
+def get_all_wishes(current_user):
 
     wishes = Wish.get_all_wishes()
     output_data = []
@@ -27,7 +29,8 @@ def get_all_wishes():
 Get one wish in list
 """
 @wish_api.route('/wishes/<id>/', methods=['GET'])
-def get_one_wish(id):
+@Auth.token_reuired
+def get_one_wish(current_user, id):
 
     wish = Wish.get_wish_by_id(id)
 
@@ -47,7 +50,8 @@ def get_one_wish(id):
 Create new wish 
 """
 @wish_api.route('/wishes/', methods=['POST'])
-def create_new_wish():
+@Auth.token_reuired
+def create_new_wish(current_user):
 
     data = request.get_json()
 
@@ -64,7 +68,8 @@ def create_new_wish():
 Edit one wish in list
 """
 @wish_api.route('/wishes/<id>', methods=['PUT'])
-def edit_one_wish(id):
+@Auth.token_reuired
+def edit_one_wish(current_user, id):
 
     data = request.get_json()
     wish = Wish.get_wish_by_id(id)
@@ -77,7 +82,8 @@ def edit_one_wish(id):
 
 
 @wish_api.route('/wishes/<id>', methods=['DELETE'])
-def delete_wish(id):
+@Auth.token_reuired
+def delete_wish(current_user, id):
 
     wish = Wish.get_wish_by_id(id)
 

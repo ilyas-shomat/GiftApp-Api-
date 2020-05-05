@@ -12,20 +12,27 @@ class Auth():
   def generate_token(public_id):
 
     payload = {'sub': public_id}
-    return jwt.encode(payload, Development.JWT_SECRET_KEY, 'HS256').decode("utf-8")
+    return jwt.encode(payload, Development.JWT_SECRET_KEY).decode("utf-8")
 
 
-  @staticmethod
-  def decode_token(token):
+  def token_reuired(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+      token = None
 
-    re = {'data': {}, 'error': {}}
-    try:
-      payload = jwt.decode(token, 'sisoft')
-      re['data'] = {'user_id': payload['sub']}
-      return re
-    except jwt.ExpiredSignatureError as e1:
-      re['error'] = {'message': 'token expired, please login again'}
-      return re
-    except jwt.InvalidTokenError:
-      re['error'] = {'message': 'Invalid token, please try again with a new token'}
-      return re
+      if 'x-access-token' in request.headers:
+        token = request.headers['x-access-token']
+
+      if not token:
+        return 'Token is missed!'
+
+      try:
+        data = jwt.decode(token, Development.JWT_SECRET_KEY)
+        public_id = data['sub']
+        current_user = User.query.filter_by(public_id=public_id).first()
+      except:
+        return 'Token is invalid!'
+
+      return f(current_user, *args, **kwargs)
+
+    return decorated

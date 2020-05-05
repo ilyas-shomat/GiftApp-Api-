@@ -49,7 +49,7 @@ def get_all_user():
 
     return jsonify({'users': output_data})
 """
-Get one list
+Get one user from list
 """
 @user_api.route('/users/<id>/', methods=['GET'])
 def get_one_user_by_Id(id):

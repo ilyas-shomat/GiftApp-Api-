@@ -20,8 +20,8 @@ class Wish(db.Model):
         return Wish.query.all()
 
     @staticmethod
-    def get_user_by_id(value):
-        return Wish.query.filter_by(id=value).first()
+    def get_wish_by_id(id):
+        return Wish.query.filter_by(id=id).first()
 
     def update_wish_data(self, data):
 

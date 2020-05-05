@@ -1,7 +1,9 @@
 from functools import wraps
 import jwt
 from flask import json, Response, request, g
+from src.config import Development
 from ..models.user_model import User
+
 
 
 class Auth():
@@ -10,21 +12,9 @@ class Auth():
   def generate_token(public_id):
 
 
+    payload = {'sub': public_id}
+    return jwt.encode(payload, Development.JWT_SECRET_KEY, 'HS256').decode("utf-8")
 
-    try:
-      payload = {'sub': public_id
-      }
-      return jwt.encode(
-        payload,
-        'sisoft',
-        'HS256'
-      ).decode("utf-8")
-    except Exception as e:
-      return Response(
-        mimetype="application/json",
-        response=json.dumps({'error': 'error in generating user token'}),
-        status=400
-      )
 
   @staticmethod
   def decode_token(token):

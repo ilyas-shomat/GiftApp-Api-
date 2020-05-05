@@ -1,6 +1,7 @@
 from flask import request, json, Response, Blueprint, jsonify
 import uuid
 from src.models.user_model import User
+from src.shared.auth import Auth
 
 user_api = Blueprint('users', __name__)
 
@@ -111,4 +112,5 @@ def login():
     if not user.check_hashed_password(data['password']):
         return jsonify({'message': 'No such user'})
 
-    return jsonify({'message': 'found such user'})
+    token = Auth.generate_token(user.public_id)
+    return jsonify({'token': token})

@@ -6,7 +6,7 @@ class Development(object):
     DEBUG = True
     TESTING = False
     JWT_SECRET_KEY = 'sisoft9&o4!$-<#ilyas&&iliyas'
-    SQLALCHEMY_DATABASE_URI = 'postgres://nlcdeuiwwkpdqo:6d8752cce8036185f550b2abc2784e364f3ffee0898d495e2dc314d33df1f1d8@ec2-54-228-209-117.eu-west-1.compute.amazonaws.com:5432/d8mdouc33b6jq5'
+    SQLALCHEMY_DATABASE_URI = 'postgres://lxkhfdrzdjsfgo:958a7405fcf7839af51187d3881b448c34fa3b1cfc60748081b349454123e338@ec2-3-231-16-122.compute-1.amazonaws.com:5432/dcf6l2rpdh87nc'
 #   postgres://name:password@host:port/db_name
 
 class Production(object):
@@ -16,7 +16,7 @@ class Production(object):
     DEBUG = False
     TESTING = False
     JWT_SECRET_KEY = 'sisoft9&o4!$-<#ilyas&&iliyas'
-    SQLALCHEMY_DATABASE_URI = 'postgres://nlcdeuiwwkpdqo:6d8752cce8036185f550b2abc2784e364f3ffee0898d495e2dc314d33df1f1d8@ec2-54-228-209-117.eu-west-1.compute.amazonaws.com:5432/d8mdouc33b6jq5'
+    SQLALCHEMY_DATABASE_URI = 'postgres://lxkhfdrzdjsfgo:958a7405fcf7839af51187d3881b448c34fa3b1cfc60748081b349454123e338@ec2-3-231-16-122.compute-1.amazonaws.com:5432/dcf6l2rpdh87nc'
 
 app_config = {
     'development': Development,

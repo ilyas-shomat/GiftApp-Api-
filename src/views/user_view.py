@@ -44,7 +44,7 @@ def get_all_user():
         user_data['public_id'] = user.public_id
         user_data['name'] = user.name
         user_data['appeal_name'] = user.appealName
-        user_data['password'] = user.password
+        # user_data['password'] = user.password
         output_data.append(user_data)
 
     return jsonify({'users': output_data})
@@ -63,7 +63,7 @@ def get_one_user_by_Id(id):
     user_data['public_id'] = user.public_id
     user_data['name'] = user.name
     user_data['appeal_name'] = user.appealName
-    user_data['password'] = user.password
+    # user_data['password'] = user.password
 
     return jsonify({'user': user_data})
 
